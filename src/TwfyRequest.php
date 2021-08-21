@@ -16,10 +16,13 @@ use OdinsHat\Twfy\Exception\TwfyException;
 class TwfyRequest
 {
     private string $url = 'https://www.theyworkforyou.com/api/';
-    private $func;
+    private string $func;
     private array $args;
 
-    public function __construct($func, $args, $api_key)
+    /**
+     * @throws TwfyException
+     */
+    public function __construct(string $func, array $args, string $api_key)
     {
         // Set function, arguments and API key
         $this->func = $func;
@@ -36,11 +39,9 @@ class TwfyRequest
     }
 
     /**
-     * Encode function arguments into a URL query string.
-     *
-     * @return string
+     * @throws TwfyException
      */
-    public function encodeQueryArguments()
+    public function encodeQueryArguments(): string
     {
         // Validate the output argument if it exists
         if (\array_key_exists('output', $this->args)) {
@@ -64,21 +65,12 @@ class TwfyRequest
         return substr($full_url, 0, -1);
     }
 
-    /**
-     * Get the URL for a particular function.
-     *
-     * @param mixed $func
-     *
-     * @return string
-     */
-    private function generateUrlForQuery($func)
+    private function generateUrlForQuery(string $func): string
     {
-        // Exit if any arguments are not defined
         if (!isset($func) || '' === $func) {
             return '';
         }
 
-        // Define valid functions
         $valid_functions = [
             'convertURL' => 'Converts a parliament.uk URL into a TheyWorkForYou one, if possible',
             'getConstituency' => 'Searches for a constituency',
@@ -104,28 +96,19 @@ class TwfyRequest
             'getComments' => 'Returns comments',
         ];
 
-        if (\array_key_exists($func, $valid_functions)) {
+        if (true === \array_key_exists($func, $valid_functions)) {
             return $this->url.$func;
         }
 
         return '';
     }
 
-    /**
-     * Validate the "output" argument.
-     *
-     * @param mixed $output
-     *
-     * @return bool
-     */
-    private function validateOutput($output): bool
+    private function validateOutput(string $output): bool
     {
-        // Exit if any arguments are not defined
         if (!isset($output) || '' === $output) {
             return false;
         }
 
-        // Define valid output types
         $valid_params = [
             'xml' => 'XML output',
             'php' => 'Serialized PHP',
@@ -133,15 +116,10 @@ class TwfyRequest
             'rabx' => 'RPC over Anything But XML',
         ];
 
-        // Check to see if the output type provided is valid
-        if (\array_key_exists($output, $valid_params)) {
-            return true;
-        }
-
-        return false;
+        return \array_key_exists($output, $valid_params);
     }
 
-    private function validateQueryArguments($func, $args)
+    private function validateQueryArguments(string $func, array $args): bool
     {
         // Define manadatory arguments
         $functions_params = [

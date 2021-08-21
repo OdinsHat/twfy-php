@@ -15,8 +15,8 @@ use OdinsHat\Twfy\Exception\TwfyException;
 
 class Twfy
 {
-    private string $apiKey;
     private $curlHandle;
+    private string $apiKey;
 
     public function __construct(string $apiKey)
     {
@@ -30,6 +30,7 @@ class Twfy
             }
         } catch (TwfyException $e) {
             echo 'Issue with API key '.$e->getMessage();
+
             exit;
         }
 
@@ -48,6 +49,12 @@ class Twfy
         curl_close($this->curlHandle);
     }
 
+    /**
+     * @param mixed $func
+     * @param mixed $args
+     *
+     * @throws TwfyException
+     */
     public function constructQuery($func, $args = []): string
     {
         if (!isset($func) || '' === $func || !isset($args) || '' === $args || !\is_array($args)) {
@@ -59,9 +66,18 @@ class Twfy
         return $this->executeQuery($query);
     }
 
+    /**
+     * @param mixed $query
+     *
+     * @throws TwfyException
+     */
     private function executeQuery($query)
     {
-        $url = $query->encode_arguments();
+        try {
+            $url = $query->encodeQueryArguments();
+        } catch (TwfyException $e) {
+            echo 'Failed compiling query arguments: '.$e->getMessage();
+        }
 
         curl_setopt($this->curlHandle, CURLOPT_URL, $url);
 
