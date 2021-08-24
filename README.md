@@ -12,6 +12,10 @@ After that you can use it in you project by simply including it with:
 Then here's a few basic examples:
 
 ```php
+$twfyapi = new TWFYAPI('DpPSWnGj7XPRGePtfMGWvGqQ');
 
+$mps = $twfyapi->query('getMPs', array('output' => 'xml', 'party' => 'labour'));
 
+header('Content-type: application/xml');
+echo $mps;
 ```
