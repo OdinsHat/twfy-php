@@ -3,17 +3,17 @@
 declare(strict_types=1);
 
 /*
- * This file is part of Tyre Label Generator.
+ * This file is part of TheyWorkForYou PHP SDK.
  * (c) Doug Bromley <doug@tintophat.com>
- * This source file is subject to the BSD license that is bundled
- * with this source code in the file LICENSE.
+ * This source file is subject to the BSD 3 Clause License that 
+ * is bundled with this source code in the file LICENSE.
  */
 
 $header = <<<'EOF'
-This file is part of Tyre Label Generator.
+This file is part of TheyWorkForYou PHP SDK.
 (c) Doug Bromley <doug@tintophat.com>
-This source file is subject to the BSD license that is bundled
-with this source code in the file LICENSE.
+This source file is subject to the BSD 3 Clause License that 
+is bundled with this source code in the file LICENSE.
 EOF;
 
 $finder = PhpCsFixer\Finder::create()
@@ -30,11 +30,20 @@ $config = new PhpCsFixer\Config();
 $config
     ->setRiskyAllowed(true)
     ->setRules([
-        '@PHP71Migration:risky' => true,
+        '@PSR12:risky' => true,
+        '@PHP74Migration:risky' => true,
         '@PHPUnit75Migration:risky' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
-        'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']], // one should use PHPUnit built-in method instead
+        'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']],
+        'concat_space' => ['spacing' => 'one'],
+        'native_function_invocation' => [
+            'include' => [
+                '@compiler_optimized',
+            ],
+            'scope' => 'all',
+            'strict' => true,
+        ],
         'header_comment' => ['header' => $header],
     ])
     ->setFinder($finder)
