@@ -1,4 +1,8 @@
-name: PHP Composer
+# Basic PHP Composer Workflow for Github
+# Based on Composer template with added 
+# Psalm Static Analysis
+
+name: PHP Composer and Psalm
 
 on:
   push:
