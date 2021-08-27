@@ -16,6 +16,7 @@ use OdinsHat\Twfy\Exception\TwfyException;
 class TwfyRequest
 {
     private string $url = 'https://www.theyworkforyou.com/api/';
+    private string $apiKey;
     private string $func;
     private array $args;
 
@@ -31,8 +32,10 @@ class TwfyRequest
 
         $this->url = $this->generateUrlForQuery($this->func);
 
-        if (!isset($this->url) || '' === $this->url) {
-            throw new TwfyException('Invalid function: ' . $this->func . '. Please look at the documentation for supported functions.');
+        if ('' === $this->url) {
+            throw new TwfyException(
+                'Invalid function: ' . $this->func . '. Please look at the documentation for supported functions.'
+            );
         }
     }
 
@@ -43,7 +46,11 @@ class TwfyRequest
     {
         if (\array_key_exists('output', $this->args)) {
             if (!$this->validateOutput($this->args['output'])) {
-                throw new TwfyException('Invalid output type: ' . $this->args['output'] . '. Please look at the documentation for supported output types.');
+                throw new TwfyException(
+                    'Invalid output type: ' .
+                    $this->args['output'] .
+                    '. Please look at the documentation for supported output types.'
+                );
             }
         }
 
@@ -51,7 +58,7 @@ class TwfyRequest
             throw new TwfyException('All mandatory arguments for ' . $this->func . ' not provided.');
         }
 
-        $fullUrl = $this->url . '?key=' . $this->api_key . '&';
+        $fullUrl = $this->url . '?key=' . $this->apiKey . '&';
 
         foreach ($this->args as $name => $value) {        // Define manadatory arguments
             $fullUrl .= $name . '=' . urlencode($value) . '&';
@@ -62,7 +69,7 @@ class TwfyRequest
 
     private function generateUrlForQuery(string $func): string
     {
-        if (!isset($func) || '' === $func) {
+        if ('' === $func) {
             return '';
         }
 
@@ -100,7 +107,7 @@ class TwfyRequest
 
     private function validateOutput(string $output): bool
     {
-        if (!isset($output) || '' === $output) {
+        if ('' === $output) {
             return false;
         }
 
