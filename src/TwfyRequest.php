@@ -25,7 +25,6 @@ class TwfyRequest
      */
     public function __construct(string $func, array $args, string $apiKey)
     {
-        // Set function, arguments and API key
         $this->func = $func;
         $this->args = $args;
         $this->apiKey = $apiKey;
