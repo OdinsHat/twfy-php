@@ -30,11 +30,13 @@ $config = new PhpCsFixer\Config();
 $config
     ->setRiskyAllowed(true)
     ->setRules([
-        '@PHP71Migration:risky' => true,
+        '@PSR12:risky' => true,
+        '@PHP74Migration:risky' => true,
         '@PHPUnit75Migration:risky' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
-        'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']], // one should use PHPUnit built-in method instead
+        'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']],
+        'concat_space' => ['spacing' => 'one'],
         'header_comment' => ['header' => $header],
     ])
     ->setFinder($finder)
