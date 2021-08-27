@@ -22,19 +22,17 @@ class TwfyRequest
     /**
      * @throws TwfyException
      */
-    public function __construct(string $func, array $args, string $api_key)
+    public function __construct(string $func, array $args, string $apiKey)
     {
         // Set function, arguments and API key
         $this->func = $func;
         $this->args = $args;
-        $this->api_key = $api_key;
+        $this->apiKey = $apiKey;
 
-        // Get and set the URL
         $this->url = $this->generateUrlForQuery($this->func);
 
-        // Check to see if valid URL has been set
         if (!isset($this->url) || '' === $this->url) {
-            throw new TwfyException('Invalid function: '.$this->func.'. Please look at the documentation for supported functions.');
+            throw new TwfyException('Invalid function: ' . $this->func . '. Please look at the documentation for supported functions.');
         }
     }
 
@@ -43,26 +41,23 @@ class TwfyRequest
      */
     public function encodeQueryArguments(): string
     {
-        // Validate the output argument if it exists
         if (\array_key_exists('output', $this->args)) {
             if (!$this->validateOutput($this->args['output'])) {
-                throw new TwfyException('Invalid output type: '.$this->args['output'].'. Please look at the documentation for supported output types.');
+                throw new TwfyException('Invalid output type: ' . $this->args['output'] . '. Please look at the documentation for supported output types.');
             }
         }
 
-        // Make sure all mandatory arguments for a particular function are present
         if (!$this->validateQueryArguments($this->func, $this->args)) {
-            throw new TwfyException('All mandatory arguments for '.$this->func.' not provided.');
+            throw new TwfyException('All mandatory arguments for ' . $this->func . ' not provided.');
         }
 
-        // Assemble the URL
-        $full_url = $this->url.'?key='.$this->api_key.'&';
+        $fullUrl = $this->url . '?key=' . $this->api_key . '&';
 
-        foreach ($this->args as $name => $value) {
-            $full_url .= $name.'='.urlencode($value).'&';
+        foreach ($this->args as $name => $value) {        // Define manadatory arguments
+            $fullUrl .= $name . '=' . urlencode($value) . '&';
         }
 
-        return substr($full_url, 0, -1);
+        return substr($fullUrl, 0, -1);
     }
 
     private function generateUrlForQuery(string $func): string
@@ -71,7 +66,7 @@ class TwfyRequest
             return '';
         }
 
-        $valid_functions = [
+        $validFunctions = [
             'convertURL' => 'Converts a parliament.uk URL into a TheyWorkForYou one, if possible',
             'getConstituency' => 'Searches for a constituency',
             'getConstituencies' => 'Returns list of constituencies',
@@ -96,8 +91,8 @@ class TwfyRequest
             'getComments' => 'Returns comments',
         ];
 
-        if (true === \array_key_exists($func, $valid_functions)) {
-            return $this->url.$func;
+        if (true === \array_key_exists($func, $validFunctions)) {
+            return $this->url . $func;
         }
 
         return '';
@@ -109,20 +104,19 @@ class TwfyRequest
             return false;
         }
 
-        $valid_params = [
+        $validParams = [
             'xml' => 'XML output',
             'php' => 'Serialized PHP',
             'js' => 'a JavaScript object',
             'rabx' => 'RPC over Anything But XML',
         ];
 
-        return \array_key_exists($output, $valid_params);
+        return \array_key_exists($output, $validParams);
     }
 
     private function validateQueryArguments(string $func, array $args): bool
     {
-        // Define manadatory arguments
-        $functions_params = [
+        $functionsParams = [
             'convertURL' => ['url'],
             'getConstituency' => ['postcode'],
             'getConstituencies' => [],
@@ -145,10 +139,9 @@ class TwfyRequest
             'getComments' => [],
         ];
 
-        // Check to see if all mandatory arguments are present
-        $required_params = $functions_params[$func];
+        $requiredParams = $functionsParams[$func];
 
-        foreach ($required_params as $param) {
+        foreach ($requiredParams as $param) {
             if (!isset($args[$param])) {
                 return false;
             }
