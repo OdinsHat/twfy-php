@@ -1,7 +1,10 @@
-# twfy-php
-An up-to-date but simple wrapper to the TheyWorkForYouAPI written in PHP.
+# TheyWorkForYou PHP SDK
 
-It can be easily installed using Composer with the following command:
+## twfy-php
+
+An up-to-date, simple wrapper to the [TheyWorkForYouAPI](https://theyworkforyou.org) written in PHP.
+
+It can be easily installed using [Composer](https://getcomposer.org) with the following command:
 
 `composer require odinshat/twfy-php`
 
@@ -9,7 +12,7 @@ After that you can use it in you project by simply including it with:
 
 `use OdinsHat\Twfy`
 
-Then here's a few basic examples:
+Then here's a basic example:
 
 ```php
 $twfyapi = new TWFYAPI('DpPSWnGj7XPRGePtfMGWvGqQ');
