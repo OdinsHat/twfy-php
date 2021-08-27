@@ -37,6 +37,13 @@ $config
         '@PhpCsFixer:risky' => true,
         'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']],
         'concat_space' => ['spacing' => 'one'],
+        'native_function_invocation' => [
+            'include' => [
+                '@compiler_optimized',
+            ],
+            'scope' => 'all',
+            'strict' => true,
+        ],
         'header_comment' => ['header' => $header],
     ])
     ->setFinder($finder)
